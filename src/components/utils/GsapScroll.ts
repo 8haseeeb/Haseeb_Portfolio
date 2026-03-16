@@ -62,6 +62,7 @@ export function setCharTimeline(
   });
   let neckBone = character?.getObjectByName("spine005");
   if (window.innerWidth > 1024) {
+    // ... [EXISTING DESKTOP LOGIC] ...
     if (character) {
       tl1
         .fromTo(character.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
@@ -119,15 +120,22 @@ export function setCharTimeline(
         .to(character.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
     }
   } else {
+    // MOBILE ANIMATIONS
     if (character) {
-      const tM2 = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".what-box-in",
-          start: "top 70%",
-          end: "bottom top",
-        },
-      });
-      tM2.to(".what-box-in", { display: "flex", duration: 0.1, delay: 0 }, 0);
+      // Shifting character up/down to clear text on mobile
+      tl1
+        .to(".character-model", { y: "-20%", scale: 0.8, duration: 1 }, 0)
+        .to(".landing-container", { opacity: 0, duration: 0.5 }, 0);
+
+      tl2
+        .to(".character-model", { opacity: 0, pointerEvents: "none", duration: 1 }, 0)
+        .to(".about-section", { opacity: 0, delay: 0.5, duration: 1 }, 0)
+        .fromTo(
+          ".what-box-in",
+          { display: "none" },
+          { display: "flex", duration: 0.1, delay: 0.5 },
+          0
+        );
     }
   }
 }
