@@ -260,6 +260,13 @@
   letter-spacing: 2px;
 }
 
+@media screen and (max-width: 600px) {
+  .landing-info h2 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+}
+
 .landing-h2-info-1 {
   position: absolute;
   top: 0;
@@ -277,6 +284,13 @@ h2.landing-info-h2 {
   margin-left: -5px;
   height: 60px;
   overflow: hidden;
+}
+
+@media screen and (max-width: 600px) {
+  h2.landing-info-h2 {
+    font-size: 32px !important;
+    height: 40px !important;
+  }
 }
 
 .landing-h2-2 {
