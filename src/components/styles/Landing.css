@@ -121,7 +121,10 @@
 
 @media screen and (max-width: 600px) {
   .character-model {
-    height: 35vh;
+    height: 30vh;
+    top: 28%;
+    /* Centered vertically between intro and info */
+    bottom: auto;
   }
 }
 
@@ -191,9 +194,14 @@
 
 @media screen and (max-width: 600px) {
   .landing-intro {
-    top: 10%;
+    top: 6%;
     width: 100%;
     text-align: center;
+  }
+
+  .landing-intro h1 {
+    font-size: 32px;
+    line-height: 32px;
   }
 }
 

@@ -42,6 +42,17 @@
   margin-top: 25px;
 }
 
+@media only screen and (max-width: 600px) {
+  .about-section {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .about-me p {
+    text-align: center;
+  }
+}
+
 @media only screen and (min-width: 600px) {
   .about-section {
     justify-content: center;
