@@ -138,16 +138,22 @@ function isWebGLAvailable(): boolean {
 
 const TechStack = () => {
   const [isActive, setIsActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const webglAvailable = useMemo(() => isWebGLAvailable(), []);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const threshold = document
-        .getElementById("work")!
-        .getBoundingClientRect().top;
-      setIsActive(scrollY > threshold);
+      const workElem = document.getElementById("work");
+      if (workElem) {
+        const threshold = workElem.getBoundingClientRect().top;
+        setIsActive(scrollY > threshold);
+      }
     };
+
+    const reziseHandler = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", reziseHandler);
+
     document.querySelectorAll(".header a").forEach((elem) => {
       const element = elem as HTMLAnchorElement;
       element.addEventListener("click", () => {
@@ -162,8 +168,10 @@ const TechStack = () => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", reziseHandler);
     };
   }, []);
+
   const materials = useMemo(() => {
     if (!webglAvailable) return [];
     return textures.map(
@@ -180,7 +188,8 @@ const TechStack = () => {
     );
   }, [webglAvailable]);
 
-  if (!webglAvailable) {
+  // Show static icons on mobile or when WebGL is unavailable to prevent crashes
+  if (!webglAvailable || isMobile) {
     return (
       <div className="techstack">
         <h2> My Techstack</h2>
@@ -189,23 +198,36 @@ const TechStack = () => {
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
-            gap: "16px",
+            gap: "20px",
             padding: "40px 20px",
+            maxWidth: "600px",
+            margin: "auto",
           }}
         >
           {imageUrls.map((url, i) => (
-            <img
+            <div
               key={i}
-              src={url}
-              alt="tech"
               style={{
-                width: "64px",
-                height: "64px",
-                borderRadius: "50%",
-                objectFit: "cover",
-                border: "2px solid rgba(255,255,255,0.15)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "10px",
               }}
-            />
+            >
+              <img
+                src={url}
+                alt="tech"
+                style={{
+                  width: "60px",
+                  height: "60px",
+                  borderRadius: "15px",
+                  objectFit: "contain",
+                  background: "rgba(255,255,255,0.05)",
+                  padding: "10px",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                }}
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -218,7 +240,7 @@ const TechStack = () => {
 
       <Canvas
         shadows
-        gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
+        gl={{ alpha: true, stencil: false, depth: true, antialias: true }}
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
         onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
         className="tech-canvas"
