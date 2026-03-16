@@ -119,6 +119,12 @@
   pointer-events: inherit;
 }
 
+@media screen and (max-width: 600px) {
+  .character-model {
+    height: 45vh;
+  }
+}
+
 .character-model::after {
   content: "";
   width: 100vw;
@@ -203,6 +209,24 @@
   bottom: 40px;
   top: inherit;
   z-index: 9;
+}
+
+@media screen and (max-width: 600px) {
+  .landing-info {
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .landing-info h2 {
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  h2.landing-info-h2 {
+    margin-left: 0 !important;
+    width: 100%;
+  }
 }
 
 .landing-info h3 {

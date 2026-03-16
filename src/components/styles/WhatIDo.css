@@ -369,10 +369,12 @@
     margin: 50px 0;
     font-size: 55px;
     line-height: 53px;
+    text-align: center;
+    width: 100%;
   }
 
   .what-box:first-child {
-    justify-content: left;
+    justify-content: center;
   }
 
   .what-box:last-child {
