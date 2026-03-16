@@ -36,13 +36,14 @@ const Scene = () => {
   const { setLoading } = useLoading();
 
   const [character, setChar] = useState<THREE.Object3D | null>(null);
-  const [webglFailed, setWebglFailed] = useState(false);
+  const [webglError, setWebglError] = useState<string | null>(null);
 
   useEffect(() => {
     if (canvasDiv.current) {
       if (!isWebGLAvailable()) {
-        console.warn("WebGL is not available in this browser.");
-        setWebglFailed(true);
+        const msg = "WebGL is not available in this browser.";
+        console.warn(msg);
+        setWebglError(msg);
         setLoading(100);
         return;
       }
@@ -58,9 +59,10 @@ const Scene = () => {
           alpha: true,
           antialias: true,
         });
-      } catch (e) {
-        console.warn("Failed to create WebGL renderer:", e);
-        setWebglFailed(true);
+      } catch (e: any) {
+        const msg = "Failed to create WebGL renderer: " + e.message;
+        console.warn(msg);
+        setWebglError(msg);
         setLoading(100);
         return;
       }
@@ -87,27 +89,33 @@ const Scene = () => {
       let progress = setProgress((value) => setLoading(value));
       const { loadCharacter } = setCharacter(renderer, scene, camera);
 
-      loadCharacter().then((gltf) => {
-        if (gltf) {
-          const animations = setAnimations(gltf);
-          hoverDivRef.current && animations.hover(gltf, hoverDivRef.current);
-          mixer = animations.mixer;
-          let character = gltf.scene;
-          setChar(character);
-          scene.add(character);
-          headBone = character.getObjectByName("spine006") || null;
-          screenLight = character.getObjectByName("screenlight") || null;
-          progress.loaded().then(() => {
-            setTimeout(() => {
-              light.turnOnLights();
-              animations.startIntro();
-            }, 2500);
-          });
-          window.addEventListener("resize", () =>
-            handleResize(renderer, camera, canvasDiv, character)
-          );
-        }
-      });
+      loadCharacter()
+        .then((gltf) => {
+          if (gltf) {
+            const animations = setAnimations(gltf);
+            hoverDivRef.current && animations.hover(gltf, hoverDivRef.current);
+            mixer = animations.mixer;
+            let character = gltf.scene;
+            setChar(character);
+            scene.add(character);
+            headBone = character.getObjectByName("spine006") || null;
+            screenLight = character.getObjectByName("screenlight") || null;
+            progress.loaded().then(() => {
+              setTimeout(() => {
+                light.turnOnLights();
+                animations.startIntro();
+              }, 2500);
+            });
+            window.addEventListener("resize", () =>
+              handleResize(renderer, camera, canvasDiv, character)
+            );
+          }
+        })
+        .catch((err: any) => {
+          console.error("Model loading error:", err);
+          setWebglError("Model Loading Failed: " + (err.message || "Unknown error"));
+          setLoading(100);
+        });
 
       let mouse = { x: 0, y: 0 },
         interpolation = { x: 0.1, y: 0.2 };
@@ -179,7 +187,7 @@ const Scene = () => {
     }
   }, []);
 
-  if (webglFailed) {
+  if (webglError) {
     return (
       <div className="character-container">
         <div

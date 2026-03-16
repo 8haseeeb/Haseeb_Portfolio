@@ -6,20 +6,22 @@ interface Props {
 
 interface State {
   hasError: boolean;
+  error: Error | null;
 }
 
 class WebGLErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, error: null };
   }
 
-  static getDerivedStateFromError(): State {
-    return { hasError: true };
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error) {
     console.warn("WebGL/3D rendering failed:", error.message);
+    this.setState({ error });
   }
 
   render() {
@@ -48,6 +50,11 @@ class WebGLErrorBoundary extends Component<Props, State> {
                 Enable WebGL in your browser to view the 3D character.
               </span>
             </p>
+            {this.state.error && (
+              <p style={{ fontSize: "10px", color: "red", marginTop: "10px", opacity: 0.8 }}>
+                Error: {this.state.error.message}
+              </p>
+            )}
           </div>
         </div>
       );
