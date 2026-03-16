@@ -212,6 +212,9 @@ const Scene = () => {
               Enable WebGL in your browser to view the 3D character.
             </span>
           </p>
+          <p style={{ fontSize: "10px", color: "red", marginTop: "10px", opacity: 0.8 }}>
+            Error: {webglError}
+          </p>
         </div>
       </div>
     );
