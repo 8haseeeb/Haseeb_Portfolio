@@ -189,6 +189,14 @@
   letter-spacing: 2px;
 }
 
+@media screen and (max-width: 600px) {
+  .landing-intro {
+    top: 10%;
+    width: 100%;
+    text-align: center;
+  }
+}
+
 .landing-intro h1 {
   margin: 0;
   letter-spacing: 2px;
