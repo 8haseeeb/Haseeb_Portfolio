@@ -115,7 +115,7 @@
   width: 100%;
   left: 50%;
   z-index: 0;
-  bottom: 50px;
+  bottom: 0px;
   pointer-events: inherit;
 }
 
@@ -327,6 +327,11 @@ h2.landing-info-h2 {
   h2.landing-info-h2 {
     font-size: 55px;
     height: 65px;
+  }
+
+  .character-model {
+    height: 90vh;
+    bottom: 0;
   }
 }
 

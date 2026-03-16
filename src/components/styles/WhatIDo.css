@@ -39,9 +39,8 @@
 .what-box-in {
   flex-direction: column;
   height: 650px;
-  margin-left: 200px;
   position: relative;
-  display: none;
+  display: flex;
 }
 
 .what-content {
@@ -338,8 +337,9 @@
   }
 
   .what-content {
-    padding: 50px;
-    width: 500px;
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
   }
 
   .what-content p {
@@ -376,7 +376,8 @@
   }
 
   .what-box:last-child {
-    height: 500px;
+    height: auto;
+    min-height: 500px;
   }
 
   .what-box {
@@ -391,7 +392,8 @@
 
   .what-box-in {
     margin-left: 0px;
-    height: 450px;
+    height: auto;
+    min-height: 450px;
   }
 
   .what-content h5,

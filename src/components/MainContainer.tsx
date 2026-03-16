@@ -35,26 +35,24 @@ const MainContainer = ({ children }: PropsWithChildren) => {
       <Cursor />
       <Navbar />
       <SocialIcons />
-      {isDesktopView && children}
       <div id="smooth-wrapper">
         <div id="smooth-content">
           <div className="container-main">
-            <Landing>{!isDesktopView && children}</Landing>
+            <Landing />
             <About />
             <WhatIDo />
             <Career />
             <Work />
-            {isDesktopView && (
-              <WebGLErrorBoundary>
-                <Suspense fallback={<div>Loading....</div>}>
-                  <TechStack />
-                </Suspense>
-              </WebGLErrorBoundary>
-            )}
+            <WebGLErrorBoundary>
+              <Suspense fallback={<div>Loading....</div>}>
+                <TechStack />
+              </Suspense>
+            </WebGLErrorBoundary>
             <Contact />
           </div>
         </div>
       </div>
+      {children}
     </div>
   );
 };
